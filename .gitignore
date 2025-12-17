@@ -3,3 +3,7 @@ node_modules
 client/node_modules/
 client/dist
 launch.json
+
+
+/src/controllers/config/database.js
+.password
