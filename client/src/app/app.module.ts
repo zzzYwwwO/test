@@ -10,10 +10,16 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DocumentComponent } from './document/document.component';
 import { CollectionComponent } from './collection/collection.component';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
-import { Type, HasMoreText, IsExpandable, FormatValue } from './common/pipes/pipes';
+import {
+  Type,
+  HasMoreText,
+  IsExpandable,
+  FormatValue,
+} from './common/pipes/pipes';
 import { FileSizePipe } from './common/pipes/file-size.pipe';
 import { HttpErrorInterceptor } from './common/interceptors/http-error.interceptor';
 import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
+import { PhoneVerifyComponent } from './phone-verify/phone-verify.component';
 
 // const editorConif : NgxMonacoEditorConfig = {
 //   onMonacoLoad: () => {
@@ -80,6 +86,7 @@ import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
     FormatValue,
     FileSizePipe,
     CollectionComponent,
+    PhoneVerifyComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,11 +98,15 @@ import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
     NgZorroAntdModule,
     MonacoEditorModule.forRoot(),
   ],
-  providers: [ApiService, { provide: NZ_I18N, useValue: en_US }, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: HttpErrorInterceptor,
-    multi: true
-  }],
+  providers: [
+    ApiService,
+    { provide: NZ_I18N, useValue: en_US },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

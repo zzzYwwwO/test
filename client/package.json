@@ -4,13 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider ng build",
+    "test": "NODE_OPTIONS=--openssl-legacy-provider ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "clean": "rm -rf dist && rm -rf ../public",
     "compress": "npx gzipper compress ./dist ../public",
-    "build:prod": "ng build --prod",
+    "build:prod": "NODE_OPTIONS=--openssl-legacy-provider ng build --prod",
     "clean-build-compress": "npm run clean && npm run build:prod && npm run compress"
   },
   "private": true,

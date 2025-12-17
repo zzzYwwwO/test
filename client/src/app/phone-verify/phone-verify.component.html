@@ -1,0 +1,34 @@
+<div class="phone-verify-container">
+  <div class="verify-box">
+    <h2>Phone Number Verification</h2>
+    <form [formGroup]="phoneForm" (ngSubmit)="verifyPhone()">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" formControlName="username" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input
+          type="text"
+          formControlName="phone"
+          class="form-control"
+          placeholder="13800138000"
+        />
+        <div
+          *ngIf="
+            phoneForm.get('phone').invalid &&
+            (phoneForm.get('phone').dirty || phoneForm.get('phone').touched)
+          "
+          class="error"
+        >
+          Please enter a valid 11-digit phone number.
+        </div>
+      </div>
+      <div *ngIf="error" class="error">{{ error }}</div>
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+        <span *ngIf="isLoading">Verifying...</span>
+        <span *ngIf="!isLoading">Verify</span>
+      </button>
+    </form>
+  </div>
+</div>

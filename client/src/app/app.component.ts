@@ -9,9 +9,8 @@ import { cloneDeep, includes, set } from 'lodash';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-
   // constrcutor
-  constructor(private Api: ApiService, private fb: FormBuilder) { }
+  constructor(private Api: ApiService, private fb: FormBuilder) {}
   title = 'ui';
   docs: any;
   activeTabIndex = 0;
@@ -57,14 +56,12 @@ export class AppComponent implements OnInit {
   getDatabases() {
     this.isLoadingDbs = true;
     this.Api.getDbs()
-      .subscribe(
-        (res: any) => {
-          this.dbs = res;
-          this.computeStats();
-          this.filter();
-          if (this.active === 'collections') this.showCollections(this.db);
-        }
-      )
+      .subscribe((res: any) => {
+        this.dbs = res;
+        this.computeStats();
+        this.filter();
+        if (this.active === 'collections') this.showCollections(this.db);
+      })
       .add(() => {
         this.isLoadingDbs = false;
       });
@@ -127,9 +124,34 @@ export class AppComponent implements OnInit {
       }
     );
   }
+  // 在ngOnInit方法开始处添加
   ngOnInit() {
-    this.getDatabases();
-    this.initForms();
+    // 检查登录状态
+    const isAuthenticated = sessionStorage.getItem('isAuthenticated');
+    if (!isAuthenticated) {
+      // 获取用户名（从Basic认证头）
+      const username = this.getUsernameFromAuth();
+      if (username) {
+        sessionStorage.setItem('username', username);
+        // 重定向到手机号验证页面
+        window.location.href = '/verify-phone';
+      }
+    } else {
+      // 已认证，加载应用
+      this.getDatabases();
+      this.initForms();
+    }
+  }
+
+  // 添加辅助方法
+  getUsernameFromAuth(): string {
+    const authHeader = localStorage.getItem('authHeader');
+    if (authHeader) {
+      const base64 = authHeader.replace('Basic ', '');
+      const decoded = atob(base64);
+      return decoded.split(':')[0];
+    }
+    return '';
   }
 
   expand(e, database) {
@@ -182,12 +204,11 @@ export class AppComponent implements OnInit {
     }
   }
   showCollections(database) {
-    this.Api.getCollections(database.name)
-      .subscribe((res:any) => {
-        set(database, 'collections', res);
-        this.db = database;
-        this.active = 'collections';
-      });
+    this.Api.getCollections(database.name).subscribe((res: any) => {
+      set(database, 'collections', res);
+      this.db = database;
+      this.active = 'collections';
+    });
   }
   closeTabsByDataBase(database) {
     this.tabs = this.tabs.filter((tab) => tab.database !== database);
@@ -200,7 +221,9 @@ export class AppComponent implements OnInit {
     this.closeAllTabs();
   }
   createTable() {
-    if (!this.addTableForm.valid) { return; }
+    if (!this.addTableForm.valid) {
+      return;
+    }
 
     this.addTableLoader = true;
 
@@ -216,7 +239,9 @@ export class AppComponent implements OnInit {
       });
   }
   dropCollection() {
-    if (!this.dropTableForm.valid) { return; }
+    if (!this.dropTableForm.valid) {
+      return;
+    }
 
     this.dropTableLoader = true;
 
@@ -232,7 +257,9 @@ export class AppComponent implements OnInit {
       });
   }
   dropDB() {
-    if (!this.dropDataBaseForm.valid) { return; }
+    if (!this.dropDataBaseForm.valid) {
+      return;
+    }
 
     this.dropDataBaseLoader = true;
 
@@ -248,7 +275,9 @@ export class AppComponent implements OnInit {
       });
   }
   addDataBase() {
-    if (!this.addDBForm.valid) { return; }
+    if (!this.addDBForm.valid) {
+      return;
+    }
 
     this.addDBLoader = true;
 
